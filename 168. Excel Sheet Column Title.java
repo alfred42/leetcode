@@ -1,13 +1,12 @@
 class Solution {
     public String convertToTitle(int n) {
-        StringBuilder sb = new StringBuilder();
+        String result = "";
         
         while (n != 0) {
-            int temp = n % 26;
+            result = ((char) ('A' + (n % 26) - 1)) + result;
             n /= 26;
-            sb.insert(0, (char) (temp + 'A' - 1));    
         }
         
-        return sb.toString();
+        return result;
     }
 }
