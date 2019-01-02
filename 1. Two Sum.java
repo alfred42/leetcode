@@ -10,6 +10,6 @@ class Solution {
             }
         }
         
-        return null;
+        throw new IllegalArgumentException("No two sum solution");
     }
 }
