@@ -8,17 +8,12 @@ class Solution {
         int rightIndex = people.length - 1;
 
         while (leftIndex <= rightIndex) {
-            if (leftIndex == rightIndex) {
+            answer++;
+
+            if (people[leftIndex] + people[rightIndex] <= limit) {
                 leftIndex++;
-                answer++;
-            } else if (people[leftIndex] + people[rightIndex] <= limit) {
-                leftIndex++;
-                rightIndex--;
-                answer++;
-            } else {
-                rightIndex--;
-                answer++;
             }
+            rightIndex--;
         }
 
         return answer;
