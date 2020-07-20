@@ -10,10 +10,9 @@ class Solution {
 
         for (char c : s2.toCharArray()) {
             counter[(int) c]--;
-        }
-
-        for (int c : counter) {
-            if (c != 0) return false;
+            if (counter[(int) c] < 0) {
+                return false;
+            }
         }
 
         return true;
