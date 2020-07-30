@@ -9,24 +9,15 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, null, null);
+    }
+
+    public boolean isValidBST(TreeNode root, Integer min, Integer max) {
         if (root == null) return true;
-        TreeNode currentNode = root;
-        long current = Long.MIN_VALUE;
-        
-        Stack<TreeNode> stack = new Stack<>();
-        
-        while (currentNode != null || !stack.isEmpty()) {
-            if (currentNode != null) {
-                stack.push(currentNode);
-                currentNode = currentNode.left;
-            } else {
-                currentNode = stack.pop();
-                if (currentNode.val <= current) return false;
-                current = currentNode.val;
-                currentNode = currentNode.right;
-            }
-        }
-        
-        return true;
+
+        if (min != null && root.val <= min) return false;
+        if (max != null && root.val >= max) return false;
+
+        return isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max);
     }
 }
