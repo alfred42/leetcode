@@ -10,16 +10,13 @@
 class Solution {
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
-        
-        TreeNode leftTree = root.left;
-        TreeNode rightTree = root.right;
-        
-        root.left = rightTree;
-        root.right = leftTree;
-        
-        invertTree(root.left);
-        invertTree(root.right);
-        
+
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+
+        root.right = left;
+        root.left = right;
+
         return root;
     }
 }
