@@ -1,36 +1,55 @@
 class BoundedBlockingQueue {
     private Queue<Integer> queue;
     private final int capacity;
-    private volatile int size;
+
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition fullCondition = lock.newCondition();
+    private Condition emptyCondition = lock.newCondition();
 
     public BoundedBlockingQueue(int capacity) {
         this.queue = new LinkedList<Integer>();
         this.capacity = capacity;
     }
     
-    public synchronized void enqueue(int element) throws InterruptedException {
-        while (size == capacity) {
-            wait();
-        }
+    public void enqueue(int element) throws InterruptedException {
+        lock.lock();
 
-        queue.offer(element);
-        size++;
-        notifyAll();
+        try {
+            while (queue.size() == capacity) {
+                fullCondition.await();
+            }
+
+            queue.offer(element);
+            emptyCondition.signal();
+        } finally {
+            lock.unlock();
+        }
     }
     
-    public synchronized int dequeue() throws InterruptedException {
-        while (size == 0) {
-            wait();
+    public int dequeue() throws InterruptedException {
+        lock.lock();
+
+        try {
+            while (queue.size() == 0) {
+                emptyCondition.await();
+            }
+
+            int value = queue.poll();
+            fullCondition.signal();
+
+            return value;
+        } finally {
+            lock.unlock();
         }
-
-        int value = queue.poll();
-        size--;
-        notifyAll();
-
-        return value; 
     }
     
     public synchronized int size() {
-        return this.size;
+        lock.lock();
+
+        try {
+            return queue.size();
+        } finally {
+            lock.unlock();
+        }
     }
 }
