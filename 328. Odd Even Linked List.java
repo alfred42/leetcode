@@ -3,38 +3,36 @@
  * public class ListNode {
  *     int val;
  *     ListNode next;
- *     ListNode(int x) { val = x; }
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-public class Solution {
+class Solution {
     public ListNode oddEvenList(ListNode head) {
-        if (head == null) return null;
-        
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        
-        ListNode nextDummy = new ListNode(0);
-        
-        ListNode current = head;
-        
-        ListNode head1 = dummy;
-        ListNode head2 = nextDummy;
-        
-        while (current != null) {
-            head1.next = current;
-            head1 = head1.next;
-            current = current.next;
-            
-            if (current != null) {
-                head2.next = current;
-                head2 = head2.next;
-                current = current.next;
+        ListNode oddDummy = new ListNode(0);
+        ListNode evenDummy = new ListNode(0);
+
+        ListNode pOdd = oddDummy;
+        ListNode pEven = evenDummy;
+
+        while (head != null) {
+            pOdd.next = head;
+            pOdd = pOdd.next;
+
+            head = head.next;
+
+            if (head != null) {
+                pEven.next = head;
+                pEven = pEven.next;
+
+                head = head.next;
             }
         }
-        
-        head1.next = nextDummy.next;
-        head2.next = null;
-        
-        return dummy.next;
+
+        pOdd.next = evenDummy.next;
+        pEven.next = null;
+
+        return oddDummy.next;
     }
 }
