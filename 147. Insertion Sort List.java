@@ -9,23 +9,28 @@
 class Solution {
     public ListNode insertionSortList(ListNode head) {
         ListNode dummy = new ListNode(0);
-        
+
         while (head != null) {
-            ListNode nextNode = head.next;
-            
-            ListNode node = dummy;
-            
-            while (node.next != null) {
-                if (node.next.val > head.val) break;
-                node = node.next;
+
+            ListNode tempP = dummy;
+
+            while (tempP.next != null) {
+                if (head.val > tempP.next.val) {
+                    tempP = tempP.next;
+                } else {
+                    break;
+                }
             }
-            
-            head.next = node.next;
-            node.next = head;
-            
-            head = nextNode;
+
+            ListNode next = tempP.next;
+            ListNode headNext = head.next;
+
+            tempP.next = head;
+            head.next = next;
+
+            head = headNext;
         }
-        
+
         return dummy.next;
     }
 }
