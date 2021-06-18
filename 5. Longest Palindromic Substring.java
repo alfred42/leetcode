@@ -2,34 +2,34 @@ class Solution {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) return "";
 
-        int longestLength = 1;
+        int maxLength = 1;
         String result = s.substring(0, 1);
 
-        char[] array = s.toCharArray();
+        for (int i = 0; i < s.length(); i++) {
+            int currentLength = 0;
+            int j = 0;
 
-        for (int i = 0; i < array.length; i++) {
-            int index = 0;
-
-            while (i - index >= 0 && i + index < array.length && array[i - index] == array[i + index]) {
-                if (2 * index + 1 > longestLength) {
-                    longestLength = 2 * index + 1;
-                    result = s.substring(i - index, i + index +1);
-                }
-
-                index++;
+            while (i - j >= 0 && i + 1 + j < s.length() && s.charAt(i - j) == s.charAt(i + 1 + j)) {
+                currentLength += 2;
+                j++;
             }
 
-            if (i + 1 < array.length && array[i] == array[i + 1]) {
-                index = 0;
+            if (currentLength > maxLength) {
+                maxLength = currentLength;
+                result = s.substring(i - j + 1, i + j + 1);
+            }
 
-                while (i - index >= 0 && i + 1 + index < array.length && array[i - index] == array[i + index + 1]) {
-                    if (2 * index + 2 > longestLength) {
-                        longestLength = 2 * index + 2;
-                        result = s.substring(i - index, i + 2 + index);
-                    }
+            currentLength = 1;
+            j = 1;
 
-                    index++;
-                }
+            while (i - j >= 0 && i + j < s.length() && s.charAt(i - j) == s.charAt(i + j)) {
+                currentLength += 2;
+                j++;
+            }
+
+            if (currentLength > maxLength) {
+                maxLength = currentLength;
+                result = s.substring(i - j + 1, i + j);
             }
         }
 
