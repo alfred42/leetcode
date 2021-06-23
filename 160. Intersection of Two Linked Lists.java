@@ -11,53 +11,52 @@
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if (headA == null || headB == null) {
-            return null;
+        if (headA == null || headB == null) return null;
+
+        ListNode dummyA = new ListNode();
+        dummyA.next = headA;
+
+        ListNode dummyB = new ListNode();
+        dummyB.next = headB;
+
+        while (headA.next != null && headB.next != null) {
+            headA = headA.next;
+            headB = headB.next;
         }
-        
-        int lengthA = 1;
-        int lengthB = 1;
-        
-        ListNode tempA = headA;
-        ListNode tempB = headB;
-        
-        while (tempA.next != null) {
-            tempA = tempA.next;
-            lengthA++;
+
+        int diff = 0;
+
+        while (headA.next != null || headB.next != null) {
+            if (headA.next != null) {
+                headA = headA.next;
+                diff++;
+            }
+            if (headB.next != null) {
+                headB = headB.next;
+                diff--;
+            }
         }
-        
-        while (tempB.next != null) {
-            tempB = tempB.next;
-            lengthB++;
+
+        if (headA != headB) return null;
+
+        headA = dummyA.next;
+        headB = dummyB.next;
+
+        while (diff != 0) {
+            if (diff > 0) {
+                headA = headA.next;
+                diff--;
+            } else {
+                headB = headB.next;
+                diff++;
+            }
         }
-        
-        if (tempA != tempB) {
-            return null;
+
+        while (headA != headB) {
+            headA = headA.next;
+            headB = headB.next;
         }
-        
-        ListNode fast;
-        ListNode slow;
-        
-        int diff = Math.abs(lengthA - lengthB);
-        
-        if (lengthA > lengthB) {
-            fast = headA;
-            slow = headB;
-        } else {
-            fast = headB;
-            slow = headA;
-        }
-        
-        while (diff > 0) {
-            fast = fast.next;
-            diff--;
-        }
-        
-        while (fast != slow) {
-            fast = fast.next;
-            slow = slow.next;
-        }
-        
-        return fast;
+
+        return headA;
     }
 }
