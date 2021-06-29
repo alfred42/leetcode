@@ -22,7 +22,7 @@ class ThroneInheritance {
     
     public void birth(String parentName, String childName) {
         Person temp = new Person(childName);
-        personMap.get(parentName).children.add(temp);
+
         personMap.put(childName, temp);
     }
     
