@@ -4,30 +4,42 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
-    
-    int answer = Integer.MAX_VALUE;
-    int min1 = Integer.MAX_VALUE;
-    
-    public void dfs(TreeNode root) {
-        if (root != null) {
-            if (root.val > min1 && root.val < answer) {
-                answer = root.val;
-            } else if (root.val == min1) {
-                dfs(root.left);
-                dfs(root.right);
-            }
-        }
-    }
-    
+    public static int currentMin;
+    public static int rootValue;
+
     public int findSecondMinimumValue(TreeNode root) {
-        min1 = root.val;
-        
+        if (root == null) return -1;
+
+        currentMin = -1;
+        rootValue = root.val;
+
         dfs(root);
-        
-        return answer == Integer.MAX_VALUE? -1: answer;
+
+        return currentMin;
+    }
+
+    public void dfs(TreeNode root) {
+        if (root == null) return;
+
+        if (currentMin != -1 && root.val >= currentMin) return;
+
+        if (root.val > rootValue) {
+            currentMin = root.val;
+        }
+
+        dfs(root.left);
+        dfs(root.right);
+
+        return;
     }
 }
