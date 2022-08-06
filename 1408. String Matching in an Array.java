@@ -1,20 +1,18 @@
 class Solution {
     public List<String> stringMatching(String[] words) {
-        StringBuilder sb = new StringBuilder();
+        List<String> answer = new ArrayList<>();
 
-        for (String word : words) {
-            sb.append(word);
-            sb.append(",");
+        Arrays.sort(words, (stra, strb) -> stra.length() - strb.length());
+
+        for (int i = 0; i < words.length - 1; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if (words[j].contains(words[i])) {
+                    answer.add(words[i]);
+                    break;
+                }
+            }
         }
 
-        String result = sb.toString();
-
-        List<String> list = new ArrayList<>();
-
-        for (String word : words) {
-            if (result.indexOf(word) != result.lastIndexOf(word)) list.add(word);
-        }
-
-        return list;
+        return answer;
     }
 }
