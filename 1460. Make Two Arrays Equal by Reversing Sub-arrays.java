@@ -1,11 +1,18 @@
 class Solution {
     public boolean canBeEqual(int[] target, int[] arr) {
-        if (target.length != arr.length) return false;
+        int[] counter = new int[1000];
 
-        Arrays.sort(target);
-        Arrays.sort(arr);
+        for (int t : target) {
+            counter[t - 1]++;
+        }
 
-        return Arrays.equals(target, arr);
+        for (int a : arr) {
+            counter[a - 1]--;
+            if (counter[a - 1] < 0) {
+                return false;
+            }
+        }
 
+        return true;
     }
 }
