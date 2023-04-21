@@ -1,29 +1,21 @@
 class Solution {
     public List<List<Integer>> largeGroupPositions(String s) {
-        List<List<Integer>> result = new ArrayList<>();
+        List<List<Integer>> resultList = new ArrayList<>();
 
-        if (s == null || s.length() == 0) return result;
+        int count = 1;
 
-        char[] charArray = s.toCharArray();
-
-        int currentStartIndex = 0;
-        char currentChar = charArray[0];
-
-        for (int i = 1; i < charArray.length; i++) {
-            if (charArray[i] != currentChar) {
-                if (i - currentStartIndex >= 3) {
-                    result.add(Arrays.asList(new Integer[] {currentStartIndex, i - 1}));
-                }
-
-                currentStartIndex = i;
-                currentChar = charArray[i];
+        for (int i = 0; i < s.length(); i++) {
+            if (i == s.length() - 1 || s.charAt(i) != s.charAt(i + 1)) {
+                if (count >= 3) {
+                    resultList.add(Arrays.asList(i - count + 1,i));
+                } 
+                count = 1;
+            }
+            else {
+                count++;
             }
         }
 
-        if (charArray.length - currentStartIndex >= 3) {
-            result.add(Arrays.asList(new Integer[] {currentStartIndex, charArray.length - 1}));
-        }
-
-        return result;
+        return resultList;
     }
 }
