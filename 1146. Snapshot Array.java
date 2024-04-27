@@ -1,47 +1,45 @@
 class SnapshotArray {
-    private class Entry {
-        public int snapId;
-        public int val;
-
-        public Entry(int snapId, int val) {
-            this.snapId = snapId;
-            this.val = val;
-        }
-    }
-
-    private List<List<Entry>> recordList;
-    private int currentSnapId;
+    private List<int[]>[] changeLog;
+    private int snapCount;
 
     public SnapshotArray(int length) {
-        recordList = new ArrayList<List<Entry>>();
+        this.snapCount = 0;
+        this.changeLog = new List[length];
 
-        for (int i = 0; i < length; i++) {
-            recordList.add(new ArrayList<>());
+        for (int i = 0; i < changeLog.length; i++) {
+            this.changeLog[i] = new ArrayList<>();
         }
-
-        this.currentSnapId = 0;
     }
     
     public void set(int index, int val) {
-        recordList.get(index).add(new Entry(currentSnapId, val));
+        this.changeLog[index].add(new int[] {this.snapCount, val});
     }
     
     public int snap() {
-        return currentSnapId++;
+        return this.snapCount++;
     }
     
     public int get(int index, int snap_id) {
-        int value = 0;
+        int x = binarySearch(index, snap_id);
+        return x == 0? 0: this.changeLog[index].get(x - 1)[1];
+    }
 
-        for (Entry entry : recordList.get(index)) {
-            if (entry.snapId <= snap_id) {
-                value = entry.val;
+    private int binarySearch(int index, int snapId) {
+        int low = 0;
+        int high = this.changeLog[index].size();
+
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            int[] tuple = this.changeLog[index].get(mid);
+
+            if (tuple[0] > snapId + 1 || (tuple[0] == snapId + 1 && tuple[1] >= 0)) {
+                high = mid;
             } else {
-                break;
+                low = mid + 1;
             }
         }
 
-        return value;
+        return low;
     }
 }
 

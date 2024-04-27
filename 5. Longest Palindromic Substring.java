@@ -2,37 +2,44 @@ class Solution {
     public String longestPalindrome(String s) {
         if (s == null || s.length() == 0) return "";
 
-        int maxLength = 1;
-        String result = s.substring(0, 1);
+        char[] array = s.toCharArray();
 
-        for (int i = 0; i < s.length(); i++) {
-            int currentLength = 0;
-            int j = 0;
+        int longestLength = 1;
+        int longestLeftIndex = 0;
+        int longestRightIndex = 1;
 
-            while (i - j >= 0 && i + 1 + j < s.length() && s.charAt(i - j) == s.charAt(i + 1 + j)) {
-                currentLength += 2;
-                j++;
+        for (int i = 0; i < array.length; i++) {
+            if (i + 1 < array.length && array[i] == array[i + 1]) {
+                int leftIndex = i;
+                int rightIndex = i + 2;
+
+                while (leftIndex - 1 >= 0 && rightIndex < array.length && array[leftIndex - 1] == array[rightIndex]) {
+                    leftIndex--;
+                    rightIndex++;
+                }
+
+                if (rightIndex - leftIndex > longestLength) {
+                    longestLength = rightIndex - leftIndex;
+                    longestLeftIndex = leftIndex;
+                    longestRightIndex = rightIndex;
+                }
             }
 
-            if (currentLength > maxLength) {
-                maxLength = currentLength;
-                result = s.substring(i - j + 1, i + j + 1);
+            int leftIndex = i;
+            int rightIndex = i + 1;
+
+            while (leftIndex - 1 >= 0 && rightIndex < array.length && array[leftIndex - 1] == array[rightIndex]) {
+                leftIndex--;
+                rightIndex++;
             }
 
-            currentLength = 1;
-            j = 1;
-
-            while (i - j >= 0 && i + j < s.length() && s.charAt(i - j) == s.charAt(i + j)) {
-                currentLength += 2;
-                j++;
-            }
-
-            if (currentLength > maxLength) {
-                maxLength = currentLength;
-                result = s.substring(i - j + 1, i + j);
+            if (rightIndex - leftIndex > longestLength) {
+                longestLength = rightIndex - leftIndex;
+                longestLeftIndex = leftIndex;
+                longestRightIndex = rightIndex;
             }
         }
 
-        return result;
+        return s.substring(longestLeftIndex, longestRightIndex);
     }
 }
