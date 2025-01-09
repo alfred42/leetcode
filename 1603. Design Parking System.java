@@ -1,27 +1,22 @@
 class ParkingSystem {
-    int maxBig;
-    int maxMedium;
-    int maxSmall;
-    int big;
-    int medium;
-    int small;
+    private int[] availableSlots;
 
     public ParkingSystem(int big, int medium, int small) {
-        maxBig = big;
-        maxMedium = medium;
-        maxSmall = small;
+        this.availableSlots = new int[3];
+
+        this.availableSlots[0] = big;
+        this.availableSlots[1] = medium;
+        this.availableSlots[2] = small;
     }
     
     public boolean addCar(int carType) {
-        if (carType == 1) {
-            return ++big <= maxBig;
-        } else if (carType == 2) {
-            return ++medium <= maxMedium;
-        } else if (carType == 3) {
-            return ++small <= maxSmall;
+        if (this.availableSlots[carType - 1] > 0) {
+            this.availableSlots[carType - 1]--;
+            return true;
+        } else {
+            return false;
         }
-
-        return false;
+        
     }
 }
 
