@@ -4,17 +4,22 @@
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
- *     TreeNode(int x) { val = x; }
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
  * }
  */
 class Solution {
     public int maxDepth(TreeNode root) {
-        return maxDepthHelper(root, 0);
+        return calMaxDepth(root);
     }
-    
-    public int maxDepthHelper(TreeNode root, int depth) {
-        if (root == null) return depth;
-        
-        return Math.max(maxDepthHelper(root.left, depth + 1), maxDepthHelper(root.right, depth + 1));
+
+    public int calMaxDepth(TreeNode root) {
+        if (root == null) return 0;
+
+        return Math.max(calMaxDepth(root.left), calMaxDepth(root.right)) + 1;
     }
-}
