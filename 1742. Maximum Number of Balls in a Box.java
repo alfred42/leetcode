@@ -1,22 +1,22 @@
 class Solution {
     public int countBalls(int lowLimit, int highLimit) {
-        int maxCount = 0;
+        int[] counter = new int[46];
 
-        Map<Integer, Integer> map = new HashMap<>();
+        int maxCount = 0;
 
         for (int i = lowLimit; i <= highLimit; i++) {
             int index = 0;
-            int temp = i;
 
-            while (temp > 0) {
-                index += temp % 10;
-                temp /= 10; 
+            int d = i;
+
+            while (d != 0) {
+                index += d % 10;
+                d /= 10;
             }
 
-            int count = map.getOrDefault(index, 0) + 1;
+            counter[index] += 1;
 
-            maxCount = Math.max(maxCount, count);
-            map.put(index, count);
+            maxCount = Math.max(maxCount, counter[index]);
         }
 
         return maxCount;
