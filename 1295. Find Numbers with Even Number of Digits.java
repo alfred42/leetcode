@@ -1,27 +1,21 @@
 class Solution {
     public int findNumbers(int[] nums) {
-        if (nums == null) return 0;
-
-        int count = 0;
+        int answer = 0;
 
         for (int num : nums) {
-            if (isEvenNumberOfDigits(num)) count++;
+            if (num / 10 >= 1 && num / 10 < 10) {
+                answer++;
+            }
+
+            if (num / 10 >= 100 && num / 10 < 1000) {
+                answer++;
+            }
+
+            if (num == 100000) {
+                answer++;
+            }
         }
 
-        return count;
-    }
-
-    public boolean isEvenNumberOfDigits(int value) {
-        if (value == 0) return false;
-        
-        int digits = 0;
-
-        while (value > 0) {
-            value /= 10;
-
-            digits++;
-        }
-
-        return digits % 2 == 0;
+        return answer;
     }
 }
