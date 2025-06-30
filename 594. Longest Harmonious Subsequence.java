@@ -5,15 +5,13 @@ class Solution {
         for (int num : nums) {
             map.put(num, map.getOrDefault(num, 0) + 1);
         }
-        
-        int result = 0;
-        
-        for (int num : map.keySet()) {
-            if (map.containsKey(num) && map.containsKey(num + 1)) {
-                result = Math.max(map.get(num) + map.get(num + 1), result);
+
+        int answer = 0;
+        for (int key : map.keySet()) {
+            if (map.containsKey(key + 1)) {
+                answer = Math.max(answer, map.get(key) + map.get(key + 1));
             }
         }
-        
-        return result;
+        return answer;
     }
 }
